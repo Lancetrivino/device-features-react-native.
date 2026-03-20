@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,9 +11,9 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Ionicons } from '@expo/vector-icons';
 import { RootStackParamList, TravelEntry } from '../types';
 import { useTheme } from '../context/ThemeContext';
 import { useDiary } from '../context/DiaryContext';
@@ -22,49 +22,54 @@ import { sendEntryRemovedNotification } from '../utils';
 
 type HomeNavProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
+const HEADER_BG = '#111827';
+const GOLD      = '#C9973A';
+
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeNavProp>();
   const { theme, toggleTheme } = useTheme();
   const { entries, removeEntry, isLoading } = useDiary();
   const { colors, mode } = theme;
+  const isDark = mode === 'dark';
 
-  const fabScale = useRef(new Animated.Value(1)).current;
+  // Hero fade-in on mount
+  // FAB scale entrance
+  const fabScale = useRef(new Animated.Value(0)).current;
+  // FAB press
+  const fabPressScale = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.spring(fabScale, { toValue: 1, friction: 6, tension: 100, useNativeDriver: true }).start();
+  }, []);
+
+  const handleFabPressIn  = () =>
+    Animated.spring(fabPressScale, { toValue: 0.9, friction: 8, useNativeDriver: true }).start();
+  const handleFabPressOut = () =>
+    Animated.spring(fabPressScale, { toValue: 1,   friction: 5, useNativeDriver: true }).start();
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'Travel Diary',
       headerStyle: {
-        backgroundColor: colors.surface,
-        elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0,
+        backgroundColor: HEADER_BG,
+        height: 110,
       },
-      headerTintColor: colors.text,
-      headerTitleStyle: {
-        color: colors.text,
-        fontWeight: '800',
-        fontSize: 20,
-        letterSpacing: 0.2,
-      },
-      headerLeft: () => (
-        <View style={{ marginLeft: 16, marginRight: 4 }}>
-          <Ionicons name="book-outline" size={22} color={colors.primary} />
+      headerTintColor: '#ffffff',
+      headerTitleStyle: { color: '#ffffff', fontWeight: '800', fontSize: 30, letterSpacing: -0.5 },
+      headerTitleAlign: 'left',
+      headerRight: () => (
+        <View style={{ marginRight: 4 }}>
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
         </View>
       ),
-      headerRight: () => <ThemeToggle theme={theme} onToggle={toggleTheme} />,
     });
-  }, [navigation, theme, toggleTheme, colors]);
+  }, [navigation, theme, toggleTheme]);
 
   const handleRemove = useCallback(async (id: string) => {
-    if (!id || typeof id !== 'string') {
-      Alert.alert('Error', 'Cannot remove this entry: invalid ID.');
-      return;
-    }
+    if (!id || typeof id !== 'string') { Alert.alert('Error', 'Cannot remove this entry.'); return; }
     try {
       await removeEntry(id);
       await sendEntryRemovedNotification();
-    } catch (error) {
-      console.error('[HomeScreen] Failed to remove entry:', error);
+    } catch {
       Alert.alert('Error', 'Failed to remove entry. Please try again.');
     }
   }, [removeEntry]);
@@ -76,54 +81,25 @@ const HomeScreen: React.FC = () => {
 
   const keyExtractor = useCallback((item: TravelEntry) => item.id, []);
 
-  const onFabPressIn = () =>
-    Animated.spring(fabScale, { toValue: 0.93, useNativeDriver: true, friction: 8 }).start();
-  const onFabPressOut = () =>
-    Animated.spring(fabScale, { toValue: 1, useNativeDriver: true, friction: 6 }).start();
 
-  const ListHeader = () => (
-    <View style={[styles.listHeader, { borderBottomColor: colors.borderLight }]}>
-      <Ionicons name="earth-outline" size={14} color={colors.textMuted} />
-      <Text style={[styles.entryCount, { color: colors.textMuted }]}>
-        {entries.length === 0
-          ? 'No entries yet — start exploring!'
-          : `${entries.length} ${entries.length === 1 ? 'journey' : 'journeys'} recorded`}
-      </Text>
-    </View>
-  );
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <StatusBar
-        barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
-        backgroundColor={colors.surface}
-      />
+      <StatusBar barStyle="light-content" backgroundColor={HEADER_BG} />
 
-      {/* Subtle ambient blobs */}
-      <View
-        style={[
-          styles.blob,
-          styles.blobTopRight,
-          { backgroundColor: colors.diaryGlow },
-        ]}
-        pointerEvents="none"
-      />
 
       {isLoading ? (
-        <View style={styles.loadingContainer}>
-          <View style={[styles.loadingRing, { borderColor: colors.primary }]}>
-            <ActivityIndicator size="large" color={colors.primary} />
-          </View>
-          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
-            Loading your diary...
-          </Text>
+        <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
+          <ActivityIndicator size="large" color={GOLD} />
+          <Text style={[styles.loadingText, { color: colors.textSecondary }]}>Loading…</Text>
         </View>
       ) : (
         <FlatList
           data={entries}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
-          ListHeaderComponent={<ListHeader />}
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{ flex: 1, backgroundColor: colors.background }}
           ListEmptyComponent={<EmptyState theme={theme} />}
           contentContainerStyle={[
             styles.listContent,
@@ -133,27 +109,17 @@ const HomeScreen: React.FC = () => {
         />
       )}
 
-      {/* FAB */}
-      <Animated.View
-        style={[styles.fabWrap, { transform: [{ scale: fabScale }] }]}
-      >
+      <Animated.View style={[styles.fabWrap, { transform: [{ scale: fabScale }, { scale: fabPressScale }] }]}>
         <TouchableOpacity
-          style={[
-            styles.fab,
-            {
-              backgroundColor: colors.primary,
-              shadowColor: colors.diaryAccent,
-            },
-          ]}
+          style={[styles.fab, { backgroundColor: GOLD }]}
           onPress={() => navigation.navigate('AddEntry')}
-          onPressIn={onFabPressIn}
-          onPressOut={onFabPressOut}
+          onPressIn={handleFabPressIn}
+          onPressOut={handleFabPressOut}
           activeOpacity={1}
-          accessibilityLabel="Add a new travel entry"
+          accessibilityLabel="Add travel entry"
           accessibilityRole="button"
         >
-          <Ionicons name="camera-outline" size={20} color="#fff" />
-          <Text style={styles.fabText}>New Entry</Text>
+          <Ionicons name="add" size={28} color="#fff" />
         </TouchableOpacity>
       </Animated.View>
     </SafeAreaView>
@@ -162,80 +128,18 @@ const HomeScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-
-  blob: {
-    position: 'absolute',
-    borderRadius: 999,
-    pointerEvents: 'none',
-  },
-  blobTopRight: {
-    width: 220,
-    height: 220,
-    top: -80,
-    right: -80,
-  },
-
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 18,
-  },
-  loadingRing: {
-    width: 68,
-    height: 68,
-    borderRadius: 34,
-    borderWidth: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    fontSize: 14,
-    fontWeight: '500',
-    letterSpacing: 0.2,
-  },
-
-  listContent: { paddingBottom: 108 },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 12 },
+  loadingText: { fontSize: 13, fontWeight: '500', letterSpacing: 0.3 },
+  listContent: { paddingBottom: 150 },
   listContentEmpty: { flex: 1 },
 
-  listHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 20,
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-    marginBottom: 4,
-  },
-  entryCount: {
-    fontSize: 13,
-    fontWeight: '600',
-    letterSpacing: 0.2,
-  },
 
-  fabWrap: {
-    position: 'absolute',
-    bottom: 26,
-    left: 20,
-    right: 20,
-  },
+  fabWrap: { position: 'absolute', bottom: 30, right: 24 },
   fab: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 10,
-    paddingVertical: 17,
-    borderRadius: 30,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.38,
-    shadowRadius: 18,
-    elevation: 12,
-  },
-  fabText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '800',
-    letterSpacing: 0.3,
+    width: 54, height: 54, borderRadius: 14,
+    alignItems: 'center', justifyContent: 'center',
+    shadowColor: '#000', shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3, shadowRadius: 12, elevation: 12,
   },
 });
 

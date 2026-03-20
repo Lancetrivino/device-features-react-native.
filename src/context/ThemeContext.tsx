@@ -9,74 +9,78 @@ import React, {
 import { ThemeContextType, Theme, ThemeMode } from '../types';
 import { loadTheme, saveTheme } from '../utils';
 
-// ─── Travel Diary — Eye-friendly Sage & Forest Palette ───────────────────────
-// Light: soft sage-white canvas, earthy teal-green brand, warm sand accents.
-// Dark:  deep forest ink — rich and restful, never harsh pure-black.
+// ── Travel Diary — Golden Hour Palette ────────────────────────────────────────
+// Light: warm cream canvas, rich ocean blue brand, golden amber accents.
+// Dark:  deep ink navy — immersive and cinematic.
 
 export const LIGHT_COLORS = {
-  background:      '#F4F7F2',   // soft sage white
+  background:      '#F7F3EE',   // warm cream
   surface:         '#FFFFFF',
-  surfaceElevated: '#EEF3EB',   // gentle green tint
+  surfaceElevated: '#EDE8E1',   // soft warm tint
   card:            '#FFFFFF',
 
-  text:            '#1C2B1A',   // deep forest
-  textSecondary:   '#4A6147',   // muted sage
-  textMuted:       '#8DA688',   // light sage
+  text:            '#1A1A2E',   // deep ink
+  textSecondary:   '#4A5568',   // warm slate
+  textMuted:       '#94A3B8',   // soft muted
 
-  primary:         '#3D7A5F',   // forest teal
-  primaryLight:    '#D4EDE3',   // soft mint
-  primaryDark:     '#2A5C44',
+  primary:         '#2A7BB5',   // rich ocean blue
+  primaryLight:    '#B8D9F0',   // pale sky
+  primaryDark:     '#1A5A8A',
 
-  accent:          '#C8956C',   // warm sand
-  accentSoft:      '#F5EAE0',
+  accent:          '#E8841A',   // golden amber
+  accentSoft:      '#FEF0DC',
 
-  border:          '#D6E4D0',
-  borderLight:     '#E8F0E5',
+  border:          '#DDD6CC',   // warm sand border
+  borderLight:     '#EDE8E1',
 
-  success:         '#3D7A5F',
-  danger:          '#C0392B',
-  dangerLight:     '#FDECEB',
+  success:         '#2A7BB5',
+  danger:          '#D64545',
+  dangerLight:     '#FCEAEA',
+  warning:         '#E8841A',
+  warningLight:    '#FEF0DC',
 
-  overlay:         'rgba(28, 43, 26, 0.50)',
-  shadow:          '#A8C4A2',
+  overlay:         'rgba(26, 26, 46, 0.55)',
+  shadow:          '#C5B9AA',
 
-  diaryAccent:     '#3D7A5F',
-  diaryGlow:       'rgba(61, 122, 95, 0.18)',
-  diaryRing:       '#3D7A5F',
-  warmSand:        '#F5EAE0',
+  diaryAccent:     '#2A7BB5',
+  diaryGlow:       'rgba(42, 123, 181, 0.15)',
+  diaryRing:       '#2A7BB5',
+  warmSand:        '#FEF0DC',
 };
 
 export const DARK_COLORS = {
-  background:      '#111A10',   // deep forest ink
-  surface:         '#182017',
-  surfaceElevated: '#1F2A1E',
-  card:            '#1A2419',
+  background:      '#0F1117',   // deep space ink
+  surface:         '#161B26',
+  surfaceElevated: '#1E2535',
+  card:            '#161B26',
 
-  text:            '#E8F0E5',
-  textSecondary:   '#93B48D',
-  textMuted:       '#507A4A',
+  text:            '#EEE8E0',   // warm white
+  textSecondary:   '#8BA4BD',   // muted blue-grey
+  textMuted:       '#3E5068',   // deep muted
 
-  primary:         '#5AAE87',
-  primaryLight:    '#1A3028',
-  primaryDark:     '#3D8A68',
+  primary:         '#4FA3D8',   // vivid sky blue
+  primaryLight:    '#4FA3D820',
+  primaryDark:     '#2A7BB5',
 
-  accent:          '#D4A574',
-  accentSoft:      '#1E1610',
+  accent:          '#F0952A',   // warm amber glow
+  accentSoft:      '#F0952A18',
 
-  border:          '#2A3D28',
-  borderLight:     '#222E21',
+  border:          '#1E2D3E',
+  borderLight:     '#1A2535',
 
-  success:         '#5AAE87',
-  danger:          '#E06060',
-  dangerLight:     '#2A1515',
+  success:         '#4FA3D8',
+  danger:          '#E05656',
+  dangerLight:     '#E0565618',
+  warning:         '#F0952A',
+  warningLight:    '#F0952A18',
 
-  overlay:         'rgba(8, 14, 8, 0.65)',
+  overlay:         'rgba(8, 10, 18, 0.70)',
   shadow:          '#000000',
 
-  diaryAccent:     '#5AAE87',
-  diaryGlow:       'rgba(90, 174, 135, 0.22)',
-  diaryRing:       '#5AAE87',
-  warmSand:        '#1E1610',
+  diaryAccent:     '#4FA3D8',
+  diaryGlow:       'rgba(79, 163, 216, 0.18)',
+  diaryRing:       '#4FA3D8',
+  warmSand:        '#1E2535',
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

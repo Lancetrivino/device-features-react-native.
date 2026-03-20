@@ -1,42 +1,75 @@
 import { ThemeColors } from '../types';
 
-export const DARK_COLORS: ThemeColors = {
-  background: '#0a0f1e',
-  surface: '#111827',
-  surfaceElevated: '#1a2235',
-  primary: '#4f8ef7',
-  primaryLight: '#7aabff',
-  accent: '#f59e0b',
-  text: '#f0f4ff',
-  textSecondary: '#9ba8c0',
-  textMuted: '#5a6580',
-  border: '#1e2d4a',
-  borderLight: '#2a3d5a',
-  danger: '#ef4444',
-  dangerLight: '#fca5a5',
-  success: '#10b981',
-  overlay: 'rgba(0,0,0,0.7)',
-  card: '#131d2e',
-  shadow: '#000000',
-};
+// ── Travel Diary — Golden Hour Palette ────────────────────────────────────────
+// Light: warm cream canvas, rich ocean blue brand, golden amber accents.
+// Dark:  deep ink navy — immersive and atmospheric.
 
 export const LIGHT_COLORS: ThemeColors = {
-  background: '#f0f4ff',
-  surface: '#ffffff',
-  surfaceElevated: '#e8edf8',
-  primary: '#2563eb',
-  primaryLight: '#3b82f6',
-  accent: '#d97706',
-  text: '#0f172a',
-  textSecondary: '#475569',
-  textMuted: '#94a3b8',
-  border: '#dde3f0',
-  borderLight: '#e8edf8',
-  danger: '#dc2626',
-  dangerLight: '#fecaca',
-  success: '#059669',
-  overlay: 'rgba(0,0,0,0.4)',
-  card: '#ffffff',
-  shadow: '#c8d3e8',
+  background:      '#F7F3EE',   // warm cream
+  surface:         '#FFFFFF',
+  surfaceElevated: '#EDE8E1',   // soft warm tint
+  card:            '#FFFFFF',
+
+  text:            '#1A1A2E',   // deep ink
+  textSecondary:   '#4A5568',   // warm slate
+  textMuted:       '#94A3B8',   // soft muted
+
+  primary:         '#2A7BB5',   // rich ocean blue
+  primaryLight:    '#B8D9F0',   // pale sky
+  primaryDark:     '#1A5A8A',
+
+  accent:          '#E8841A',   // golden amber
+  accentSoft:      '#FEF0DC',
+
+  border:          '#DDD6CC',   // warm sand border
+  borderLight:     '#EDE8E1',
+
+  success:         '#2A7BB5',
+  danger:          '#D64545',
+  dangerLight:     '#FCEAEA',
+  warning:         '#E8841A',
+  warningLight:    '#FEF0DC',
+
+  overlay:         'rgba(26, 26, 46, 0.55)',
+  shadow:          '#C5B9AA',
+
+  diaryAccent:     '#2A7BB5',
+  diaryGlow:       'rgba(42, 123, 181, 0.15)',
+  diaryRing:       '#2A7BB5',
+  warmSand:        '#FEF0DC',
 };
 
+export const DARK_COLORS: ThemeColors = {
+  background:      '#0F1117',   // deep space ink
+  surface:         '#161B26',
+  surfaceElevated: '#1E2535',
+  card:            '#161B26',
+
+  text:            '#EEE8E0',   // warm white
+  textSecondary:   '#8BA4BD',   // muted blue-grey
+  textMuted:       '#3E5068',   // deep muted
+
+  primary:         '#4FA3D8',   // vivid sky blue
+  primaryLight:    '#4FA3D820',
+  primaryDark:     '#2A7BB5',
+
+  accent:          '#F0952A',   // warm amber glow
+  accentSoft:      '#F0952A18',
+
+  border:          '#1E2D3E',
+  borderLight:     '#1A2535',
+
+  success:         '#4FA3D8',
+  danger:          '#E05656',
+  dangerLight:     '#E0565618',
+  warning:         '#F0952A',
+  warningLight:    '#F0952A18',
+
+  overlay:         'rgba(8, 10, 18, 0.70)',
+  shadow:          '#000000',
+
+  diaryAccent:     '#4FA3D8',
+  diaryGlow:       'rgba(79, 163, 216, 0.18)',
+  diaryRing:       '#4FA3D8',
+  warmSand:        '#1E2535',
+};

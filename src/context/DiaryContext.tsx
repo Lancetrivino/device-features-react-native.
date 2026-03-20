@@ -62,8 +62,13 @@ export const DiaryProvider: React.FC<DiaryProviderProps> = ({ children }) => {
     await saveEntries(updated);
   }, [entries]);
 
+  const clearAllEntries = useCallback(async (): Promise<void> => {
+    setEntries([]);
+    await saveEntries([]);
+  }, []);
+
   return (
-    <DiaryContext.Provider value={{ entries, addEntry, removeEntry, isLoading }}>
+    <DiaryContext.Provider value={{ entries, addEntry, removeEntry, clearAllEntries, isLoading }}>
       {children}
     </DiaryContext.Provider>
   );

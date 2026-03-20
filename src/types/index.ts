@@ -7,6 +7,7 @@ export interface TravelEntry {
   latitude: number;
   longitude: number;
   createdAt: string;
+  caption?: string;
   title?: string;
 }
 
@@ -27,30 +28,46 @@ export type RootStackParamList = {
 export type ThemeMode = 'light' | 'dark';
 
 export interface ThemeColors {
+  // Backgrounds
   background: string;
   surface: string;
   surfaceElevated: string;
-  primary: string;
-  primaryLight: string;
-  primaryDark: string;      // added
-  accent: string;
-  accentSoft: string;       // added
+  card: string;
+
+  // Text
   text: string;
   textSecondary: string;
   textMuted: string;
+
+  // Brand
+  primary: string;
+  primaryLight: string;
+  primaryDark: string;
+
+  // Accent
+  accent: string;
+  accentSoft: string;
+
+  // Borders
   border: string;
   borderLight: string;
+
+  // Semantic
+  success: string;
   danger: string;
   dangerLight: string;
-  success: string;
+  warning: string;
+  warningLight: string;
+
+  // Utility
   overlay: string;
-  card: string;
   shadow: string;
-  // Travel Diary additions
-  diaryAccent: string;      // added
-  diaryGlow: string;        // added
-  diaryRing: string;        // added
-  warmSand: string;         // added
+
+  // Diary-specific
+  diaryAccent: string;
+  diaryGlow: string;
+  diaryRing: string;
+  warmSand: string;
 }
 
 export interface Theme {
@@ -69,6 +86,7 @@ export interface DiaryContextType {
   entries: TravelEntry[];
   addEntry: (entry: TravelEntry) => Promise<void>;
   removeEntry: (id: string) => Promise<void>;
+  clearAllEntries: () => Promise<void>;
   isLoading: boolean;
 }
 
