@@ -1,0 +1,50 @@
+﻿{
+  "expo": {
+    "name": "Travel Diary",
+    "slug": "TravelDiary",
+    "version": "1.0.0",
+    "sdkVersion": "54.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a0f1e"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.traveldiary.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Travel Diary needs camera access.",
+        "NSLocationWhenInUseUsageDescription": "Travel Diary needs location access.",
+        "NSPhotoLibraryUsageDescription": "Travel Diary needs photo library access.",
+        "NSPhotoLibraryAddUsageDescription": "Travel Diary needs permission to save photos."
+      }
+    },
+    "android": {
+      "package": "com.traveldiary.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0a0f1e"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.VIBRATE",
+        "android.permission.POST_NOTIFICATIONS"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      ["expo-notifications", { "color": "#4f8ef7" }],
+      ["expo-location", { "locationAlwaysAndWhenInUsePermission": "Travel Diary needs your location." }],
+      ["expo-image-picker", { "photosPermission": "Travel Diary needs photos access." }]
+    ]
+  }
+}
